@@ -13,7 +13,7 @@ namespace LibrarySystem.Data
         
        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
        {
-        optionsBuilder.UseSqlServer("Server=localhost,1433;Database=LibrarySytem;User Id=sa;Password=Sh133102;");
+        optionsBuilder.UseSqlServer("Server=localhost,1433;Database=LibrarySytem;User Id=sa;Password=Sh133102; Encrypt=False");
        }
 
        protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -34,12 +34,12 @@ namespace LibrarySystem.Data
             modelBuilder.Entity<Loan>()
                 .HasOne(l => l.Book)
                 .WithMany(b => b.Loans)
-                .HasForeignKey(l => l.BookId);
+                .HasForeignKey(l => l.BookID);
 
             modelBuilder.Entity<Loan>()
                 .HasOne(l => l.Member)
                 .WithMany(m => m.Loans)
-                .HasForeignKey(l => l.MemberId);
+                .HasForeignKey(l => l.MemberID);
        }
     }
 }

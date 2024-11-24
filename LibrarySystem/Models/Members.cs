@@ -9,7 +9,7 @@ namespace  LibrarySystem.Models
         public string LastName { get; set; }
         public string Email { get; set; }
         public DateTime MembershipStartDate { get; set; }
-        public ICollection<Loan> loans { get; set; }
+        public ICollection<Loan> Loans { get; set; }
 
         
         

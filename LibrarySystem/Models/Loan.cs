@@ -8,7 +8,7 @@ namespace LibrarySystem.Models
         public int MemberID { get; set; }
         public DateTime LoanDate { get; set; }
         public DateTime? ReturnDate { get; set; }
-        public Book book { get; set; }
-        public Member member { get; set; }
+        public Book Book { get; set; }
+        public Member Member { get; set; }
     }
 }
