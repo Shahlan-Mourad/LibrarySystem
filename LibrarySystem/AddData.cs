@@ -1,10 +1,7 @@
 using LibrarySystem.Data; 
 using LibrarySystem.Models; 
 using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
-using System; 
-using System.Linq;
-using System.Security.Cryptography.X509Certificates;
+
 
 public class AddData
 {
