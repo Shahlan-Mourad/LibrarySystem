@@ -1,45 +1,56 @@
 using Microsoft.EntityFrameworkCore;
 using LibrarySystem.Data;
+using LibrarySystem.Models;
+using System;
+using System.Linq;
 
-public class ReadData
+
+namespace LibrarySystem.ReadData
 {
-    public void ListAllBooks()
+
+    public class ReadData
     {
-        var context = new LibraryContext();
-        var books = context.Books
-                .Include(b => b.BookAuthors)
-                .ThenInclude(ba => ba.Author)
-                .ToList();
-            foreach (var book in books)
-            {
-                Console.WriteLine($"Title: {book.Title}, Genre: {book.Genre}, PublishedYear: {book.Publication_Date}");
-                foreach (var ba in book.BookAuthors)
+
+        private readonly LibraryContext _context;
+        public ReadData(LibraryContext context)
+        {
+            _context = context; //  hela ListService-klassen kan använda _context för att interagera med databasen.
+        }
+        public void ListAllBooks()
+        {
+            var books = _context.Books
+                    .Include(b => b.BookAuthors)
+                    .ThenInclude(ba => ba.Author)
+                    .ToList();
+                foreach (var book in books)
                 {
-                    Console.WriteLine($"Author: {ba.Author.Name}");
+                    Console.WriteLine($"Title: {book.Title}, Genre: {book.Genre}, PublishedYear: {book.Publication_Date}");
+                    foreach (var ba in book.BookAuthors)
+                    {
+                        Console.WriteLine($"Author: {ba.Author.Name}");
+                    }
                 }
+                    
+        }
+        public void ListAllMembers()
+        {
+            var members = _context.Members.ToList();
+            foreach (var member in members)
+            {
+                Console.WriteLine($"Name: {member.FristName} {member.LastName}, Email: {member.Email}, MembershipStartDate: {member.MembershipStartDate}");
             }
-                
-    }
-    public void ListAllMembers()
-    {
-        var context = new LibraryContext();
-        var members = context.Members.ToList();
-        foreach (var member in members)
-        {
-            Console.WriteLine($"Name: {member.FristName} {member.LastName}, Email: {member.Email}, MembershipStartDate: {member.MembershipStartDate}");
         }
-    }
-    public void ListAllLoans()
-    {
-        var context = new LibraryContext();
-        var loans = context.Loans
-        .Include(l => l.Book)
-        .Include(l => l.Member)
-        .ToList();
-        foreach (var loan in loans)
+        public void ListAllLoans()
         {
-            Console.WriteLine($"Book: {loan.Book.Title}, Borrower: {loan.Member.FristName} {loan.Member.LastName}, LoanDate: {loan.LoanDate}, ReturnDate: {loan.ReturnDate}");
+            var loans = _context.Loans
+            .Include(l => l.Book)
+            .Include(l => l.Member)
+            .ToList();
+            foreach (var loan in loans)
+            {
+                Console.WriteLine($"Book: {loan.Book.Title}, Borrower: {loan.Member.FristName} {loan.Member.LastName}, LoanDate: {loan.LoanDate}, ReturnDate: {loan.ReturnDate}");
+            }
         }
+
     }
-    
 }

@@ -1,5 +1,6 @@
 
 
+
 namespace LibrarySystem.Models
 {
     public class Book
@@ -13,6 +14,7 @@ namespace LibrarySystem.Models
         public string Genre { get; set; }
         public ICollection<BookAuthor> BookAuthors { get; set; }
         public ICollection<Loan> Loans { get; set; }
-           
+
+        
     }
 }
