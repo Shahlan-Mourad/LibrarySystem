@@ -53,11 +53,12 @@ namespace LibrarySystem.AddData
             bool exit = false;
             while (!exit)
             {
-                Console.WriteLine("Välj vad du vill lägga till: ");
-                Console.WriteLine("1. Bok");
+                Console.WriteLine("Välj ett alternativ: \n\n");
+                Console.WriteLine("1. Add Bok");
                 Console.WriteLine("2. Låna Bok");
-                Console.WriteLine("3. Medlem");
-                Console.WriteLine("4. Exit");
+                Console.WriteLine("3. Returnera Bok");
+                Console.WriteLine("4. Medlem");
+                Console.WriteLine("5. Exit");
                 var input = Console.ReadLine();
                 switch (input)
                 {
@@ -68,9 +69,12 @@ namespace LibrarySystem.AddData
                         AddLoan();
                         break;
                     case "3":
-                        AddMember();
+                        ReturnBook();
                         break;
                     case "4":
+                        AddMember();
+                        break;
+                    case "5":
                         exit = true;
                         break;
                     default:
@@ -116,14 +120,14 @@ namespace LibrarySystem.AddData
             var bookid = int.Parse(Console.ReadLine());
 
             var _member = _context.Members.FirstOrDefault(m => m.MemberID == memberid);
-            if (_member == null)
+            if (_member == null) // om medlemmen inte finns i databasen
             {
                 Console.WriteLine("Medlem inte hittad");
                 return;
             }
 
             var _book = _context.Books.FirstOrDefault(b => b.BookID == bookid);
-            if (_book == null)
+            if (_book == null) // om boken inte finns i databasen
             {
                 Console.WriteLine("Bok inte hittad");
                 return;
@@ -133,6 +137,23 @@ namespace LibrarySystem.AddData
             _context.Loans.Add(loan);
             _context.SaveChanges();
             Console.WriteLine($"Bok lånde till {DateTime.Now.AddMonths(1)}");
+        }
+
+        private void ReturnBook()
+        {
+            Console.Write("Ange Lån ID: ");
+            var loanId = int.Parse(Console.ReadLine());
+
+            var _loan = _context.Loans.FirstOrDefault(l => l.LoanID == loanId);
+            if (_loan == null) // om lån inte finns i databasen
+            {
+                Console.WriteLine("Lån inte hittat");
+                return;
+            }
+            _loan.ReturnDate = DateTime.Now; // ändra returdatumet till nuvarande datum
+            _context.Loans.Remove(_loan); // ta bort lån från tabelen Loans i databasen
+            _context.SaveChanges();
+            Console.WriteLine("Tack för återlämningen");
         }
         public void AddMember() // för att rigistera som en medlem
         {
