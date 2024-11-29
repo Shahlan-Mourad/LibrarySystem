@@ -14,59 +14,8 @@ namespace LibrarySystem.AddData
         {
             _context = context;
         }
-        public static void Run()
-        { 
-            
-            using (var context = new LibraryContext())
-            {
-                var transaction = context.Database.BeginTransaction(); //Starta transaktion
-                try
-                {
-                    
-                    var book = new Book { Title = "I Don't Want To Grow Up", Author = "Scott Stillma", Publication_Year = 2021, Genre = "Rock", Pages = 184, ISBN = "978-1-7323522-6-1"};
-                    context.Books.Add(book);
-                    var author = new Author { Name = "Scott Stillma", Birth = 1980};
-                    context.Authors.Add(author);
-
-                    var book1 = new Book { Title = "The Pull Of The Stars", Author = "Emma Donoghue", Publication_Year = 2020, Genre = "Fiction", Pages = 256, ISBN = "978-0-316-49901-9"};
-                    context.Books.Add(book1);
-                    var author1 = new Author { Name = "Emma Donoghue", Birth = 1969};
-                    context.Authors.Add(author1);
-                    
-
-                    context.SaveChanges();
-
-                    transaction.Commit();
-                }
-                catch (Exception ex)
-                {
-                    transaction.Rollback(); // Om något går fel, rulla tillbaka transaktionen
-                    Console.WriteLine("Ett fel inträffade: " + ex.Message);
-                }
-
-                // var addService = new csAddData(context);
-                // var book = new Book { 
-                //     Title = "I Don't Want To Grow Up", 
-                //     Author = "Scott Stillma",
-                //     Publication_Year = 2021,
-                //     Genre = "Rock",
-                //     Pages = 184,
-                //     ISBN = "978-1-7323522-6-1"
-                //     };
-                    
-                // addService.AddBook(book);
-                // Console.WriteLine($"Bok tilllgd: {book.Title}");
-
-                // var books = context.Books.ToList();
-                // foreach (var b in books)
-                // {
-                //     Console.WriteLine($"Title: {book.Title}");
-                // } 
-    
-            }
-        }
-
-        public void AddBook(Book book)
+     
+        public void AddBook(Book book) 
         {
             
             _context.Books.Add(book);
@@ -74,7 +23,7 @@ namespace LibrarySystem.AddData
             
         }
 
-        public void AddAuthor(Author author)
+        public void AddAuthor(Author author) 
         {
             _context.Authors.Add(author);
             _context.SaveChanges();
@@ -87,39 +36,47 @@ namespace LibrarySystem.AddData
             _context.SaveChanges();
         }
 
-        public void AddMember(Member member)
+        public void AddMember(Member member) 
         {
             _context.Members.Add(member);
             _context.SaveChanges();
         }
 
-        public void AddLoan(Loan loan)
+        public void AddLoan(Loan loan) 
         {
             _context.Loans.Add(loan);
             _context.SaveChanges();
         }
 
-        public void DisplayAdd()
+        public void DisplayAdd() // för att lägga en bok eller rigistera en medlem från termialen 
         {
-            Console.WriteLine("Välj vad du vill lägga till: ");
-            Console.WriteLine("1. Bok");
-            Console.WriteLine("2. Medlem");
-            var input = Console.ReadLine();
-            switch (input)
+            bool exit = false;
+            while (!exit)
             {
-                case "1":
-                    AddBook();
-                    break;
-                case "2":
-                    AddMember();
-                    break;
-                default:
-                    Console.WriteLine("Ogiltigt val");
-                    break;
+                Console.WriteLine("Välj vad du vill lägga till: ");
+                Console.WriteLine("1. Bok");
+                Console.WriteLine("2. Medlem");
+                Console.WriteLine("3. Exit");
+                var input = Console.ReadLine();
+                switch (input)
+                {
+                    case "1":
+                        AddBook();
+                        break;
+                    case "2":
+                        AddMember();
+                        break;
+                    case "3":
+                        exit = true;
+                        break;
+                    default:
+                        Console.WriteLine("Ogiltigt val");
+                        break;
+                }
             }
         }
 
-        private void AddBook()
+        private void AddBook() // för att lägga till en bok
         {
             Console.Write("Ange BokTitel: ");
             var title = Console.ReadLine();
@@ -132,14 +89,21 @@ namespace LibrarySystem.AddData
             Console.Write("Antal Sidor");
             var page  = int.Parse(Console.ReadLine());
             Console.Write("ISBN: ");
-            var ISBN = Console.ReadLine();  
+            var ISBN = Console.ReadLine();
+            // kontrollera om författaren redan finns i databasen
+            var _author = _context.Authors.FirstOrDefault(a => a.Name == author);
+            if (_author == null)
+            {
+                _author = new Author { Name = author};
+                _context.Authors.Add(_author); // lägg till författaren till tabelen Authors i databasen 
+            }
 
             var book = new Book { Title = title, Author = author, Genre = genre, Publication_Year = publishedyear, Pages = page, ISBN = ISBN };
-            _context.Books.Add(book);
+            _context.Books.Add(book); // lägg till boken till tabelen Books i databasen
             _context.SaveChanges();
             Console.WriteLine($"{title} tilllagd");
         }   
-        public void AddMember()
+        public void AddMember() // för att rigistera som en medlem
         {
             Console.Write("Ange förnamn: ");
             var fristName = Console.ReadLine();
