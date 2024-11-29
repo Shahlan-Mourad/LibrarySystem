@@ -55,8 +55,9 @@ namespace LibrarySystem.AddData
             {
                 Console.WriteLine("Välj vad du vill lägga till: ");
                 Console.WriteLine("1. Bok");
-                Console.WriteLine("2. Medlem");
-                Console.WriteLine("3. Exit");
+                Console.WriteLine("2. Låna Bok");
+                Console.WriteLine("3. Medlem");
+                Console.WriteLine("4. Exit");
                 var input = Console.ReadLine();
                 switch (input)
                 {
@@ -64,9 +65,12 @@ namespace LibrarySystem.AddData
                         AddBook();
                         break;
                     case "2":
-                        AddMember();
+                        AddLoan();
                         break;
                     case "3":
+                        AddMember();
+                        break;
+                    case "4":
                         exit = true;
                         break;
                     default:
@@ -102,7 +106,34 @@ namespace LibrarySystem.AddData
             _context.Books.Add(book); // lägg till boken till tabelen Books i databasen
             _context.SaveChanges();
             Console.WriteLine($"{title} tilllagd");
-        }   
+        } 
+
+        private void AddLoan()
+        {
+            Console.Write("Ange MedlemsID: ");
+            var memberid = int.Parse(Console.ReadLine());
+            Console.Write("Ange BokID: ");
+            var bookid = int.Parse(Console.ReadLine());
+
+            var _member = _context.Members.FirstOrDefault(m => m.MemberID == memberid);
+            if (_member == null)
+            {
+                Console.WriteLine("Medlem inte hittad");
+                return;
+            }
+
+            var _book = _context.Books.FirstOrDefault(b => b.BookID == bookid);
+            if (_book == null)
+            {
+                Console.WriteLine("Bok inte hittad");
+                return;
+            }
+
+            var loan = new Loan { MemberID = memberid, BookID = bookid, LoanDate = DateTime.Now, ReturnDate = DateTime.Now.AddMonths(1)};
+            _context.Loans.Add(loan);
+            _context.SaveChanges();
+            Console.WriteLine($"Bok lånde till {DateTime.Now.AddMonths(1)}");
+        }
         public void AddMember() // för att rigistera som en medlem
         {
             Console.Write("Ange förnamn: ");
