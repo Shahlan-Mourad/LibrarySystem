@@ -27,7 +27,7 @@ namespace LibrarySystem.Services
                     Console.WriteLine("1. Lista alla böcker");
                     Console.WriteLine("2. Lista alla medlemmar");
                     Console.WriteLine("3. Lista alla utlånade böcker");
-                    Console.WriteLine("4. Add Book, Låna, retunera eller bli medlem");
+                    Console.WriteLine("4. Add Book, Låna, retunera, Ta bort eller bli medlem");
                     Console.WriteLine("5. Exit");
                     var _input = Console.ReadLine();
                     switch (_input)

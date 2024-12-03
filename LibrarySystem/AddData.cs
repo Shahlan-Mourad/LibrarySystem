@@ -57,8 +57,9 @@ namespace LibrarySystem.AddData
                 Console.WriteLine("1. Add Bok");
                 Console.WriteLine("2. Låna Bok");
                 Console.WriteLine("3. Returnera Bok");
-                Console.WriteLine("4. Medlem");
-                Console.WriteLine("5. Exit");
+                Console.WriteLine("4. Ta bort Bok");
+                Console.WriteLine("5. Medlem");
+                Console.WriteLine("6. Exit");
                 var input = Console.ReadLine();
                 switch (input)
                 {
@@ -72,9 +73,12 @@ namespace LibrarySystem.AddData
                         ReturnBook();
                         break;
                     case "4":
-                        AddMember();
+                        RemoveBook();
                         break;
                     case "5":
+                        AddMember();
+                        break;
+                    case "6":
                         exit = true;
                         break;
                     default:
@@ -154,6 +158,20 @@ namespace LibrarySystem.AddData
             _context.Loans.Remove(_loan); // ta bort lån från tabelen Loans i databasen
             _context.SaveChanges();
             Console.WriteLine("Tack för återlämningen");
+        }
+        private void RemoveBook()
+        {
+            Console.Write("Ange Bok ID: ");
+            var bookid = int.Parse(Console.ReadLine());
+            var _book = _context.Books.FirstOrDefault(b => b.BookID == bookid);
+            if (_book == null) // om boken inte finns i databasen
+            {
+                Console.WriteLine("Bok inte hittad");
+                return;
+            }
+            _context.Books.Remove(_book); // ta bort boken från tabelen Books 
+            _context.SaveChanges();
+            Console.WriteLine("Bok borttagen.");
         }
         public void AddMember() // för att rigistera som en medlem
         {
