@@ -39,7 +39,7 @@ namespace LibrarySystem.ReadData
             var members = _context.Members.ToList();
             foreach (var member in members)
             {
-                Console.WriteLine($"Name: {member.FristName} {member.LastName}, Email: {member.Email}, MembershipStartDate: {member.MembershipStartDate}");
+                Console.WriteLine($"Name: {member.FristName} {member.LastName}, Email: {member.Email}, MembershipStartDate: {member.MembershipStartDate} MemberID {member.MemberID}");
             }
         }
         public void ListAllLoans()
@@ -50,7 +50,7 @@ namespace LibrarySystem.ReadData
             .ToList();
             foreach (var loan in loans)
             {
-                Console.WriteLine($"Book: {loan.Book.Title}, Borrower: {loan.Member.FristName} {loan.Member.LastName}, LoanDate: {loan.LoanDate}, ReturnDate: {loan.ReturnDate}");
+                Console.WriteLine($"Book: {loan.Book.Title}, Borrower: {loan.Member.FristName} {loan.Member.LastName}, LoanDate: {loan.LoanDate}, ReturnDate: {loan.ReturnDate}, LoanID {loan.LoanID}");
             }
         }
 

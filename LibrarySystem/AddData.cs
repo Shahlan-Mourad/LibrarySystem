@@ -14,39 +14,6 @@ namespace LibrarySystem.AddData
         {
             _context = context;
         }
-     
-        public void AddBook(Book book) 
-        {
-            
-            _context.Books.Add(book);
-            _context.SaveChanges();
-            
-        }
-
-        public void AddAuthor(Author author) 
-        {
-            _context.Authors.Add(author);
-            _context.SaveChanges();
-        }
-
-        public void AddBookAuthor(int book_ID, int author_ID) //om en bok ha flera författare och en författare skrivt flera böcker,
-        {
-            var bookAuthor = new BookAuthor { BookId = book_ID, AuthorId = author_ID };
-            _context.BookAuthors.Add(bookAuthor);
-            _context.SaveChanges();
-        }
-
-        public void AddMember(Member member) 
-        {
-            _context.Members.Add(member);
-            _context.SaveChanges();
-        }
-
-        public void AddLoan(Loan loan) 
-        {
-            _context.Loans.Add(loan);
-            _context.SaveChanges();
-        }
 
         public void DisplayAdd() // för att lägga en bok eller rigistera en medlem från termialen 
         {
